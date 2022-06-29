@@ -12,7 +12,16 @@ const authRoutes = require('./routes/auth');
 
 const PORT = process.env.PORT || 5000;
 
-// middlewares
+// app middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(
+	cors({
+		origin: process.env.CLIENT_URL,
+	})
+);
+
+//custom middlewares
 app.use('/api', authRoutes);
 
 app.listen(PORT, () => {
