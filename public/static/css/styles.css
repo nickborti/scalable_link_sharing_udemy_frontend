@@ -1,0 +1,8 @@
+#nprogress .bar {
+	background: rgb(195, 20, 49);
+	height: 5px;
+}
+
+.nav a:hover {
+	border-radius: 0px;
+}
