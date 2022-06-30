@@ -1,7 +1,8 @@
 const AWS = require('aws-sdk');
 const jwt = require('jsonwebtoken');
-const { registerEmailParams } = require('../helpers/email');
+const shortId = require('shortid');
 
+const { registerEmailParams } = require('../helpers/email');
 const User = require('../models/user');
 
 AWS.config.update({
@@ -57,5 +58,54 @@ exports.register = (req, res) => {
 					error: 'We could not verify your email. Please try again',
 				});
 			});
+	});
+};
+
+exports.activate = (req, res) => {
+	const { token } = req.body;
+
+	jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+		if (err) {
+			return res.status(401).json({
+				error: 'Expired link. Try again',
+			});
+		}
+
+		const { name, email, password } = jwt.decode(token);
+		const username = shortId.generate();
+
+		User.findOne({ email }).exec((err, user) => {
+			if (err) {
+				return res.status(400).json({
+					error: 'Something went wrong.',
+				});
+			}
+
+			if (user) {
+				return res.status(401).json({
+					error: 'Email already exists',
+				});
+			}
+
+			// create user
+			const newUser = new User({
+				username,
+				name,
+				email,
+				password,
+			});
+
+			newUser.save((err, result) => {
+				if (err) {
+					return res.status(400).json({
+						error: 'Error saving user in database. Try again ',
+					});
+				}
+
+				return res.json({
+					message: 'Registration success. Please login',
+				});
+			});
+		});
 	});
 };
