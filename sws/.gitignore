@@ -2,6 +2,7 @@ client/node_modules
 client/.next
 client/package-lock.json
 client/next.config.js
+client/.swc
 
 server/node_modules
 server/package-lock.json
