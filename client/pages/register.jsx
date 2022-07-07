@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Layout from '../components/Layout';
 import { showErrorMessage, showSuccessMessage } from '../helpers/alerts';
 import { API } from '../config';
+import { isAuth } from '../helpers/auth';
+import Router from 'next/router';
 
 const register = () => {
 	const [state, setState] = useState({
@@ -15,9 +17,13 @@ const register = () => {
 		buttonText: 'Register',
 	});
 
+	useEffect(() => {
+		isAuth() && Router.push('/');
+	}, []);
+
 	const { name, email, password, buttonText, error, success } = state;
 
-	const handleChange = (name) => (event) => {
+	const handleChange = name => event => {
 		setState({
 			...state,
 			[name]: event.target.value,
@@ -27,7 +33,7 @@ const register = () => {
 		});
 	};
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async event => {
 		event.preventDefault();
 
 		setState({ ...state, buttonText: 'Registering ...' });

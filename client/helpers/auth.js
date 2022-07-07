@@ -4,7 +4,7 @@ import cookie from 'js-cookie';
 export const setCookie = (key, value) => {
 	// NextJS runs both on client and server side
 	// Check if it's a browser
-	if (typeof window !== undefined) {
+	if (typeof window !== 'undefined') {
 		cookie.set(key, value, {
 			expires: 7, // 7 day
 		});
@@ -15,7 +15,7 @@ export const setCookie = (key, value) => {
 export const removeCookie = key => {
 	// NextJS runs both on client and server side
 	// Check if it's a browser
-	if (typeof window !== undefined) {
+	if (typeof window !== 'undefined') {
 		cookie.remove(key);
 	}
 };
@@ -24,29 +24,29 @@ export const removeCookie = key => {
 export const getCookie = key => {
 	// NextJS runs both on client and server side
 	// Check if it's a browser
-	if (typeof window !== undefined) {
+	if (typeof window !== 'undefined') {
 		return cookie.get(key);
 	}
 };
 
 // localStorage setitem
 export const setLocalStorage = (key, value) => {
-	if (typeof window !== undefined) {
+	if (typeof window !== 'undefined') {
 		localStorage.setItem(key, JSON.stringify(value));
 	}
 };
 
 // localstorage removeitem
 export const removeLocalStorage = key => {
-	if (typeof window !== undefined) {
+	if (typeof window !== 'undefined') {
 		localStorage.removeItem(key);
 	}
 };
 
 // authenticate user to pass info through cookie and localStorage
-export const authenticate = (data, next) => {
-	setCookie('token', data.token);
-	setLocalStorage('user', data.user);
+export const authenticate = (payload, next) => {
+	setCookie('token', payload.data.token);
+	setLocalStorage('user', payload.data.user);
 	next();
 };
 
@@ -54,9 +54,13 @@ export const authenticate = (data, next) => {
 export const isAuth = () => {
 	const cookieChecked = getCookie('token');
 	if (cookieChecked !== 'undefined') {
-		const user = localStorage.getItem('user');
-		if (user !== 'undefined') {
-			return JSON.parse(user);
+		if (typeof window !== 'undefined') {
+			const user = localStorage.getItem('user');
+			if (user !== 'undefined') {
+				return JSON.parse(user);
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
