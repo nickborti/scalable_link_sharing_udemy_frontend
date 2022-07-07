@@ -1,4 +1,5 @@
 import cookie from 'js-cookie';
+import Router from 'next/router';
 
 // set cookie
 export const setCookie = (key, value) => {
@@ -67,4 +68,10 @@ export const isAuth = () => {
 	} else {
 		return false;
 	}
+};
+
+export const logout = () => {
+	removeLocalStorage('user');
+	removeCookie('token');
+	Router.push('/login');
 };

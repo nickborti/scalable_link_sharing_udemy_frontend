@@ -9,8 +9,8 @@ import Router from 'next/router';
 
 const login = () => {
 	const [state, setState] = useState({
-		email: '',
-		password: '',
+		email: 'saaggy18@gmail.com',
+		password: '123456',
 		error: '',
 		success: '',
 		buttonText: 'Login',

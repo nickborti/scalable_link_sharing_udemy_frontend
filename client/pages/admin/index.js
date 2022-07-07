@@ -1,7 +1,12 @@
 import React from 'react';
+import Layout from '../../components/Layout';
 
-const admin = () => {
-	return <div>admin page</div>;
+const Admin = () => {
+	return (
+		<Layout>
+			<h1>Admin Page</h1>
+		</Layout>
+	);
 };
 
-export default admin;
+export default Admin;
