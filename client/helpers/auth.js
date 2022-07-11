@@ -22,12 +22,36 @@ export const removeCookie = key => {
 };
 
 // get cookie
-export const getCookie = key => {
+export const getCookie = (key, req) => {
 	// NextJS runs both on client and server side
 	// Check if it's a browser
-	if (typeof window !== 'undefined') {
-		return cookie.get(key);
+	// if (typeof window !== 'undefined') {
+	// 	return cookie.get(key);
+	// }
+
+	return typeof window !== 'undefined'
+		? getCookieFromBrowser(key)
+		: getCookieFromServer(key, req);
+};
+
+const getCookieFromBrowser = key => {
+	return cookie.get(key);
+};
+
+const getCookieFromServer = (key, req) => {
+	if (!req.headers.cookie) {
+		return undefined;
 	}
+
+	let token = req.headers.cookie
+		.split(';')
+		.find(c => c.trim().startsWith(`${key}=`));
+	if (!token) {
+		return undefined;
+	}
+
+	const tokenValue = token.split('=')[1];
+	return tokenValue;
 };
 
 // localStorage setitem
