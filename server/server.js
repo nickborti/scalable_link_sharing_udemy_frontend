@@ -11,10 +11,11 @@ const app = express();
 mongoose
 	.connect(process.env.DATABASE_CLOUD, {})
 	.then(() => console.log('DB connected'))
-	.catch((err) => console.log('DB Error => ', err));
+	.catch(err => console.log('DB Error => ', err));
 
 // Routes
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 const PORT = process.env.PORT || 5000;
 
@@ -29,6 +30,7 @@ app.use(
 
 //custom middlewares
 app.use('/api', authRoutes);
+app.use('/api', userRoutes);
 
 app.listen(PORT, () => {
 	console.log('Listening on PORT ', PORT);
