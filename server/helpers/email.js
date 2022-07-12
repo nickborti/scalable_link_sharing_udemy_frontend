@@ -25,3 +25,30 @@ exports.registerEmailParams = (name, email, token) => {
 		},
 	};
 };
+
+exports.forgotPasswordEmailParams = (email, token) => {
+	return {
+		Source: process.env.EMAIL_FROM,
+		Destination: {
+			ToAddresses: [email],
+		},
+		ReplyToAddresses: [process.env.EMAIL_TO],
+		Message: {
+			Body: {
+				Html: {
+					Charset: 'UTF-8',
+					Data: `
+                    <html>
+                        <h3>Reset Password Link</h3>
+                        <p style="color:red;">Please use the follow link to reset your password</p>
+                        <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+                    </html>`,
+				},
+			},
+			Subject: {
+				Charset: 'UTF-8',
+				Data: 'Reset your password',
+			},
+		},
+	};
+};
