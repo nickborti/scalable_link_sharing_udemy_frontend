@@ -6,6 +6,7 @@ import { showErrorMessage, showSuccessMessage } from '../helpers/alerts';
 import { API } from '../config';
 import { authenticate, isAuth } from '../helpers/auth';
 import Router from 'next/router';
+import Link from 'next/link';
 
 const login = () => {
 	const [state, setState] = useState({
@@ -94,6 +95,9 @@ const login = () => {
 				{success && showSuccessMessage(success)}
 				{error && showErrorMessage(error)}
 				{loginForm()}
+				<Link href='/auth/password/forgot'>
+					<a className='text-danger float-right'>Forgot Password?</a>
+				</Link>
 			</div>
 		</Layout>
 	);
