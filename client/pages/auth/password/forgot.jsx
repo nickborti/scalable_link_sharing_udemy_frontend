@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Router from 'next/router';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Layout from '../../../components/Layout';
 import { showErrorMessage, showSuccessMessage } from '../../../helpers/alerts';
 import { API } from '../../../config';
 
-const ForgotPassword = ({ router }) => {
+const ForgotPassword = () => {
 	const [state, setState] = useState({
 		email: '',
 		buttonText: 'Send Email',
